@@ -1,3 +1,7 @@
+import com.yandex.sprint_4.model.Epic;
+import com.yandex.sprint_4.model.Status;
+import com.yandex.sprint_4.model.Subtask;
+import com.yandex.sprint_4.model.Task;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +48,11 @@ public class TaskManager {
 
     public void deleteAllEpics() {
         epics.clear();
+        subtasks.clear();
     }
 
     public Epic getEpicById(int id) {
-        return (Epic) epics.get(id);
+        return epics.get(id);
     }
 
     public Epic createEpic(Epic epic) {
@@ -58,11 +63,16 @@ public class TaskManager {
 
     public void updateEpic(Epic epic) {
         epics.put(epic.id, epic);
-        updateEpicStatus(epic.getId());
+
     }
 
     public void deleteEpicById(int id) {
         epics.remove(id);
+        for (Subtask sub : subtasks.values()) {
+            if (sub.getEpic().id == id) {
+                subtasks.remove(sub);
+            }
+        }
     }
 
     public List<Subtask> getAllSubtasks() {
@@ -71,6 +81,10 @@ public class TaskManager {
 
     public void deleteAllSubtasks() {
         subtasks.clear();
+        for (Epic ep : epics.values()) {
+            ep.removeAllSubtasks();
+            updateEpicStatus(ep.getId());
+        }
     }
 
     public Subtask getSubtaskById(int id) {
@@ -81,6 +95,7 @@ public class TaskManager {
         subtask.id = nextId++;
         subtasks.put(subtask.id, subtask);
         subtask.getEpic().addSubtask(subtask);
+        updateEpicStatus(subtask.getEpic().getId());
         return subtask;
     }
 
@@ -90,6 +105,10 @@ public class TaskManager {
     }
 
     public void deleteSubtaskById(int id) {
+        Epic ep = subtasks.get(id).getEpic();
+        ep.removeSubtask(subtasks.get(id));
+        updateEpic(ep);
+        updateEpicStatus(ep.getId());
         subtasks.remove(id);
     }
 
@@ -100,9 +119,25 @@ public class TaskManager {
     }
 
     public void updateEpicStatus(int epicId) {
-        Epic epic = (Epic) getTaskById(epicId);
-        if (epic != null) {
-            epic.setStatus(epic.getStatus());
+        Epic epic = epics.get(epicId);
+        if(epic != null){
+            epic.setStatus(checkEpicStatus(epic));
+        }
+
+
+
+    }
+
+    public Status checkEpicStatus(Epic epic){
+        if(epic.getSubtasks().isEmpty()){
+            return Status.NEW;
+        }
+        if (epic.getSubtasks().stream().anyMatch(task -> task.getStatus().equals(Status.IN_PROGRESS))) {
+            return Status.IN_PROGRESS;
+        } else if (epic.getSubtasks().stream().allMatch(task -> task.getStatus().equals(Status.DONE))) {
+            return Status.DONE;
+        } else {
+            return Status.NEW;
         }
     }
 }

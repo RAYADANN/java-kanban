@@ -20,26 +20,13 @@ public class Epic extends Task {
         subtasks.remove(subtask);
     }
 
-    @Override
-    public Status getStatus() {
-        if (subtasks.isEmpty()) {
-            return Status.NEW;
-        }
-
-        for (Subtask subtask : subtasks) {
-            if (subtask.getStatus() != Status.DONE) {
-                return Status.IN_PROGRESS;
-            }
-        }
-
-        return Status.DONE;
-    }
+    public void removeAllSubtasks(){ subtasks.clear(); }
 
     @Override
     public String toString() {
         return "Epic{" +
                 "name='" + name + '\'' +
-                ", status=" + this.getStatus() +
+                ", status=" + status +
                 ", subtasks=" + subtasks +
                 '}';
     }

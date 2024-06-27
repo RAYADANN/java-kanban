@@ -1,3 +1,8 @@
+import com.yandex.sprint_4.model.Epic;
+import com.yandex.sprint_4.model.Status;
+import com.yandex.sprint_4.model.Subtask;
+import com.yandex.sprint_4.model.Task;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -27,18 +32,19 @@ public class Main {
         System.out.println("Список подзадач: " + taskManager.getAllSubtasks());
 
         task1.setStatus(Status.DONE);
-        subtask1.setStatus(Status.DONE);
+        subtask1.setStatus(Status.IN_PROGRESS);
         subtask2.setStatus(Status.DONE);
 
         System.out.println("Измененная задача 1: " + task1);
         System.out.println("Измененная подзадача 1: " + subtask1);
         System.out.println("Измененный эпик 1: " + epic1);
 
-        taskManager.deleteTaskById(task1.getId());
-        taskManager.deleteEpicById(epic2.getId());
 
         System.out.println("Список задач после удаления: " + taskManager.getAllTasks());
         System.out.println("Список эпиков после удаления: " + taskManager.getAllEpics());
         System.out.println("Список подзадач после удаления: " + taskManager.getAllSubtasks());
+
+        taskManager.deleteAllSubtasks();
+        System.out.println("Список эпиков после удаления всех подзадач: " + taskManager.getAllEpics());
     }
 }
