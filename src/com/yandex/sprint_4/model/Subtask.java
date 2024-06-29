@@ -1,5 +1,9 @@
+package com.yandex.sprint_4.model;
+
 public class Subtask extends Task {
-    private Epic epic;
+
+
+    private  Epic epic;
 
     public Subtask(int id, String name, String description, Status status, Epic epic) {
         super(id, name, description, status);
@@ -10,17 +14,14 @@ public class Subtask extends Task {
         return epic;
     }
 
-    public void setEpic(Epic epic) {
-        this.epic = epic;
-    }
-
     @Override
     public String toString() {
         return "Subtask{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", epic=" + epic.getName() +
                 '}';
     }
 }

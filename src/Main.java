@@ -2,6 +2,7 @@ import com.yandex.sprint_4.model.Epic;
 import com.yandex.sprint_4.model.Status;
 import com.yandex.sprint_4.model.Subtask;
 import com.yandex.sprint_4.model.Task;
+import com.yandex.sprint_4.service.TaskManager;
 
 public class Main {
 
@@ -14,7 +15,7 @@ public class Main {
 
         Epic epic1 = new Epic(0, "Организация дня рождения", "Запланировать день рождения, купить подарки, организовать вечеринку", Status.NEW);
         Subtask subtask1 = new Subtask(0, "Запланировать день рождения", "Выбрать дату, место, гостей", Status.NEW, epic1);
-        Subtask subtask2 = new Subtask(0, "Купить подарки", "Выбрать подарки для всех гостей", Status.IN_PROGRESS, epic1);
+        Subtask subtask2 = new Subtask(0, "Купить подарки", "Выбрать подарки для всех гостей", Status.DONE, epic1);
         taskManager.createEpic(epic1);
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
@@ -39,6 +40,9 @@ public class Main {
         System.out.println("Измененная подзадача 1: " + subtask1);
         System.out.println("Измененный эпик 1: " + epic1);
 
+        taskManager.deleteSubtaskById(subtask2.getId());
+        taskManager.deleteEpicById(epic2.getId());
+        taskManager.deleteTaskById(task1.getId());
 
         System.out.println("Список задач после удаления: " + taskManager.getAllTasks());
         System.out.println("Список эпиков после удаления: " + taskManager.getAllEpics());

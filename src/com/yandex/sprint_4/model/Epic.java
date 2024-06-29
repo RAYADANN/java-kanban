@@ -1,8 +1,10 @@
+package com.yandex.sprint_4.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private List<Subtask> subtasks = new ArrayList<>();
+    private final List<Subtask> subtasks = new ArrayList<>();
 
     public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);
@@ -25,9 +27,11 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "name='" + name + '\'' +
-                ", status=" + status +
-                ", subtasks=" + subtasks +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", subtasks=" + getSubtasks() +
                 '}';
     }
 }
