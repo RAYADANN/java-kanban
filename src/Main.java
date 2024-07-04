@@ -2,13 +2,15 @@ import com.yandex.sprint_4.model.Epic;
 import com.yandex.sprint_4.model.Status;
 import com.yandex.sprint_4.model.Subtask;
 import com.yandex.sprint_4.model.Task;
+import com.yandex.sprint_4.service.InMemoryTaskManager;
+import com.yandex.sprint_4.service.Managers;
 import com.yandex.sprint_4.service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         Task task1 = new Task(0, "Помыть посуду", "Помыть всю посуду в раковине", Status.NEW);
         Task task2 = new Task(0, "Сходить в магазин", "Купить продукты на ужин", Status.IN_PROGRESS);
@@ -50,5 +52,23 @@ public class Main {
 
         taskManager.deleteAllSubtasks();
         System.out.println("Список эпиков после удаления всех подзадач: " + taskManager.getAllEpics());
+
+
+        taskManager.getTaskById(7);
+        taskManager.getSubtaskById(subtask2.getId());
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getTaskById(7);
+        taskManager.getEpicById(1);
+        taskManager.getTaskById(7);
+
+
+        System.out.println("История поиска: " + taskManager.getHistory());
     }
 }
