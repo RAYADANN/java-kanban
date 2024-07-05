@@ -26,7 +26,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-
         history.getHistory().add(tasks.get(id));
         return tasks.get(id);
     }
