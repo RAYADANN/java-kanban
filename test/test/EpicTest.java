@@ -25,7 +25,6 @@ class EpicTest {
 
     @Test
     void testGetSubtasks() {
-
         epic.addSubtask(subtask1);
         epic.addSubtask(subtask2);
 
@@ -38,8 +37,6 @@ class EpicTest {
 
     @Test
     void testAddSubtask() {
-
-
         epic.addSubtask(subtask1);
 
         assertEquals(1, epic.getSubtasks().size());
