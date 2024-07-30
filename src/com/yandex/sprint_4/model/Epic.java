@@ -22,7 +22,9 @@ public class Epic extends Task {
         subtasks.remove(subtask);
     }
 
-    public void removeAllSubtasks(){ subtasks.clear(); }
+    public void removeAllSubtasks() {
+        subtasks.clear();
+    }
 
     @Override
     public String toString() {

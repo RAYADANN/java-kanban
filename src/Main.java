@@ -52,7 +52,6 @@ public class Main {
         taskManager.deleteAllSubtasks();
         System.out.println("Список эпиков после удаления всех подзадач: " + taskManager.getAllEpics());
 
-
         taskManager.getTaskById(task2.getId());
         taskManager.getTaskById(task2.getId());
         taskManager.getTaskById(task2.getId());
@@ -65,7 +64,7 @@ public class Main {
         taskManager.getTaskById(task2.getId());
         taskManager.getEpicById(epic1.getId());
         taskManager.getTaskById(task2.getId());
-
+        taskManager.getEpicById(epic1.getId());
 
         System.out.println("История поиска: " + taskManager.getHistory());
     }
