@@ -17,7 +17,7 @@ class EpicTest {
     Subtask subtask2;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         epic = new Epic(1, "Название эпика", "Описание эпика", Status.NEW);
         subtask1 = new Subtask(101, "Подзадача 1", "Описание подзадачи 1", Status.DONE, epic);
         subtask2 = new Subtask(102, "Подзадача 2", "Описание подзадачи 2", Status.IN_PROGRESS, epic);
