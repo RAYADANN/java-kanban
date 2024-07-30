@@ -65,6 +65,7 @@ public class Main {
         taskManager.getTaskById(task2.getId());
         taskManager.getEpicById(epic1.getId());
         taskManager.getTaskById(task2.getId());
+        taskManager.getEpicById(epic1.getId());
 
 
         System.out.println("История поиска: " + taskManager.getHistory());
