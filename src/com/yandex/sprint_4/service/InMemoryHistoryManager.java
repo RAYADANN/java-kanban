@@ -52,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (task == null){
+        if (task == null) {
             return;
         }
         if (taskIndex.containsKey(task.getId())) {
