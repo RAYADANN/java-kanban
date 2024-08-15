@@ -13,18 +13,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTest {
 
-    @Test
-    public void testAddTask() {
+    HistoryManager historyManager;
+    Task task;
+    Task task2;
+    List<Task> history;
 
-        HistoryManager historyManager = Managers.getDefaultHistory();
+    @BeforeEach
+    public void beforeEach() {
+        historyManager = Managers.getDefaultHistory();
 
-        Task task = new Task(0,"Задача 1", "Описание 1", Status.NEW);
+        task = new Task(0, "Задача 1", "Описание 1", Status.NEW);
         historyManager.add(task);
 
-        Task task2 = new Task(1,"Задача 2", "Описание 2", Status.NEW);
+        task2 = new Task(1, "Задача 2", "Описание 2", Status.NEW);
         historyManager.add(task2);
 
-        List<Task> history = historyManager.getHistory();
+        history = historyManager.getHistory();
+    }
+
+    @Test
+    public void testAddTask() {
         assertEquals(2, history.size());
 
         Task firstTask = history.get(task.getId());
@@ -35,15 +43,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    public void testRemoveTask(){
-        HistoryManager historyManager = Managers.getDefaultHistory();
-
-        Task task = new Task(1,"Задача 1", "Описание 1", Status.NEW);
-        historyManager.add(task);
-
-        Task task2 = new Task(2,"Задача 2", "Описание 2", Status.NEW);
-        historyManager.add(task2);
-        List<Task> history = historyManager.getHistory();
+    public void testRemoveTask() {
         assertEquals(2, history.size());
 
         historyManager.remove(task.getId());

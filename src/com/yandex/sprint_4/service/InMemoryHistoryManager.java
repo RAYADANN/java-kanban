@@ -6,47 +6,47 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static final Map<Integer, Node<Task>> taskIndex = new HashMap<>();
-    private Node<Task> head = null;
-    private Node<Task> tail = null;
+    private static final Map<Integer, Node> taskIndex = new HashMap<>();
+    private Node head = null;
+    private Node tail = null;
 
     public void linkLast(Task task) {
-        Node<Task> newNode = new Node<>(task);
+        Node newNode = new Node(task);
 
         if (tail == null) {
             head = newNode;
             tail = newNode;
         } else {
-            tail.next = newNode;
-            newNode.prev = tail;
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
             tail = newNode;
         }
     }
 
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        Node<Task> current = head;
+        Node current = head;
         while (current != null) {
-            tasks.add(current.taskMain);
-            current = current.next;
+            tasks.add(current.getTaskMain());
+            current = current.getNext();
         }
         return tasks;
     }
 
-    public void removeNode(Node<Task> nodeToRemove) {
+    public void removeNode(Node nodeToRemove) {
         if (nodeToRemove == null) {
             return;
         }
 
         if (nodeToRemove == head) {
-            head = head.next;
+            head = head.getNext();
         } else {
-            nodeToRemove.next = nodeToRemove.prev;
+            nodeToRemove.setNext(nodeToRemove.getPrev());
         }
         if (nodeToRemove == tail) {
-            tail = tail.prev;
+            tail = tail.getPrev();
         } else {
-            nodeToRemove.prev = nodeToRemove.next;
+            nodeToRemove.setPrev(nodeToRemove.getNext());
         }
     }
 
