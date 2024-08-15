@@ -45,6 +45,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(int id) {
         tasks.remove(id);
+        history.remove(id);
     }
 
 
@@ -85,6 +86,7 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.remove(sub.getId(), sub);
         }
         epics.remove(id);
+        history.remove(id);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtaskById(int id) {
         history.add(subtasks.get(id));
-        return  subtasks.get(id);
+        return subtasks.get(id);
     }
 
     @Override
@@ -128,6 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
         ep.removeSubtask(subtasks.get(id));
         updateEpicStatus(ep.getId());
         subtasks.remove(id);
+        history.remove(id);
     }
 
     @Override
@@ -140,14 +143,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        if(epic != null){
+        if (epic != null) {
             epic.setStatus(checkEpicStatus(epic));
         }
     }
 
     @Override
-    public Status checkEpicStatus(Epic epic){
-        if(epic.getSubtasks().isEmpty()){
+    public Status checkEpicStatus(Epic epic) {
+        if (epic.getSubtasks().isEmpty()) {
             return Status.NEW;
         }
 
@@ -161,7 +164,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getHistory(){
+    public List<Task> getHistory() {
         return new LinkedList<>(history.getHistory());
     }
 }
