@@ -5,12 +5,21 @@ public class Task {
     protected String name;
     protected String description;
     protected Status status;
+    protected Epic epic;
+    static int nextId = 0;
 
     public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.setId(nextId++);
     }
 
     public int getId() {
@@ -43,6 +52,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 
     @Override
