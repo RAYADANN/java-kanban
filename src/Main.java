@@ -2,27 +2,38 @@ import com.yandex.sprint_4.model.Epic;
 import com.yandex.sprint_4.model.Status;
 import com.yandex.sprint_4.model.Subtask;
 import com.yandex.sprint_4.model.Task;
+import com.yandex.sprint_4.service.FileBackedTaskManager;
 import com.yandex.sprint_4.service.Managers;
 import com.yandex.sprint_4.service.TaskManager;
+
+import java.io.File;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
+       FileBackedTaskManager.loadFromFile(new File("src/Data.csv"));
 
-        TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task(0, "Помыть посуду", "Помыть всю посуду в раковине", Status.NEW);
-        Task task2 = new Task(0, "Сходить в магазин", "Купить продукты на ужин", Status.IN_PROGRESS);
+        FileBackedTaskManager taskManager = (FileBackedTaskManager) Managers.getDefault();
+        if(taskManager.getDataTask() != null){
+            for(String line : taskManager.getDataTask()){
+                taskManager.fromString(line);
+            }
+        }
 
-        Epic epic1 = new Epic(0, "Организация дня рождения", "Запланировать день рождения, купить подарки, организовать вечеринку", Status.NEW);
-        Subtask subtask1 = new Subtask(0, "Запланировать день рождения", "Выбрать дату, место, гостей", Status.NEW, epic1);
-        Subtask subtask2 = new Subtask(0, "Купить подарки", "Выбрать подарки для всех гостей", Status.DONE, epic1);
+        Task task1 = new Task(1, "Помыть посуду", "Помыть всю посуду в раковине", Status.NEW);
+        Task task2 = new Task(2, "Сходить в магазин", "Купить продукты на ужин", Status.IN_PROGRESS);
+
+        Epic epic1 = new Epic(3, "Организация дня рождения", "Запланировать день рождения, купить подарки, организовать вечеринку", Status.NEW);
+        Subtask subtask1 = new Subtask(4, "Запланировать день рождения", "Выбрать дату, место, гостей", Status.NEW, epic1);
+        Subtask subtask2 = new Subtask(5, "Купить подарки", "Выбрать подарки для всех гостей", Status.DONE, epic1);
         taskManager.createEpic(epic1);
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
 
-        Epic epic2 = new Epic(0, "Поездка на море", "Забронировать билеты, снять жилье, купить чемодан", Status.NEW);
-        Subtask subtask3 = new Subtask(0, "Забронировать билеты", "Найти и забронировать авиабилеты", Status.DONE, epic2);
+        Epic epic2 = new Epic(6, "Поездка на море", "Забронировать билеты, снять жилье, купить чемодан", Status.NEW);
+        Subtask subtask3 = new Subtask(7, "Забронировать билеты", "Найти и забронировать авиабилеты", Status.DONE, epic2);
         taskManager.createEpic(epic2);
         taskManager.createSubtask(subtask3);
 
@@ -49,7 +60,7 @@ public class Main {
         System.out.println("Список эпиков после удаления: " + taskManager.getAllEpics());
         System.out.println("Список подзадач после удаления: " + taskManager.getAllSubtasks());
 
-        taskManager.deleteAllSubtasks();
+
         System.out.println("Список эпиков после удаления всех подзадач: " + taskManager.getAllEpics());
 
         taskManager.getTaskById(task2.getId());
