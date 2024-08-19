@@ -6,21 +6,16 @@ public class Task {
     protected String description;
     protected Status status;
     protected Epic epic;
-    static int nextId = 0;
+    protected TaskTypes taskType;
 
     public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.setTaskType(TaskTypes.TASK);
     }
 
-    public Task(String name, String description, Status status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.setId(nextId++);
-    }
 
     public int getId() {
         return id;
@@ -60,6 +55,14 @@ public class Task {
 
     public void setEpic(Epic epic) {
         this.epic = epic;
+    }
+
+    public TaskTypes getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskTypes taskType) {
+        this.taskType = taskType;
     }
 
     @Override

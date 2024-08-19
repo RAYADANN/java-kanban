@@ -9,13 +9,22 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
     private static final List<String> dataTask = new ArrayList<>();
+    private final String DATA_FILE_PATH = "src/com/yandex/sprint_4/resources/Data.csv";
+    private final File HOME_FILE = new File(DATA_FILE_PATH);
+
+    public FileBackedTaskManager() {
+        try {
+            HOME_FILE.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void save() {
         List<Task> data = new ArrayList<>(super.getAllTasks());
         data.addAll(super.getAllEpics());
         data.addAll(super.getAllSubtasks());
-        File file = new File("src/Data.csv");
-        try (Writer writer = new FileWriter(file, false)) {
+        try (Writer writer = new FileWriter(HOME_FILE, false)) {
             writer.write("id;type;name;status;description;epicID\n");
             for (Task t : data) {
                 writer.write(toString(t));
@@ -29,12 +38,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private String toString(Task task) {
         return String.format("%s;%s;%s;%s;%s;%s\n",
                 task.getId(),
-                task.getClass() == Task.class ? TaskTypes.TASK :
-                        Subtask.class == task.getClass() ? TaskTypes.SUB : TaskTypes.EPIC,
+                task.getTaskType(),
                 task.getName(),
                 task.getStatus(),
                 task.getDescription(),
-                task.getEpic() != null ? task.getEpic().getId() + ";" + task.getEpic().getName() : "-");
+                task.getEpic() != null ? task.getEpic().getId() : "");
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
@@ -56,29 +64,32 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public Task fromString(String value) {
         String[] data = value.split(";");
-        if (data.length <= 6) {
-            if (data[1].equals("TASK")) {
+        switch (data[1]) {
+            case "TASK":
                 return createTask(new Task(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
                         data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
                                 : Status.IN_PROGRESS));
-            } else {
+            case "EPIC":
                 return createEpic(new Epic(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
                         data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
                                 : Status.IN_PROGRESS));
-            }
-        } else {
-            return createSubtask(new Subtask(
-                    Integer.parseInt(data[0]),
-                    data[2],
-                    data[4],
-                    data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
-                            : Status.IN_PROGRESS,
-                    getEpicById(Integer.parseInt(data[5]))
-            ));
+            case "SUB":
+                return createSubtask(new Subtask(
+                        Integer.parseInt(data[0]),
+                        data[2],
+                        data[4],
+                        data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
+                                : Status.IN_PROGRESS,
+                        getEpicById(Integer.parseInt(data[5]))
+                ));
+
+            default:
+                return null;
+
         }
     }
 
@@ -147,4 +158,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public List<String> getDataTask() {
         return dataTask;
     }
+
 }

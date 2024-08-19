@@ -10,7 +10,12 @@ import java.io.File;
 public class Main {
 
  public static void main(String[] args) {
-  FileBackedTaskManager.loadFromFile(new File("src/Data.csv"));
+
+  try {
+   FileBackedTaskManager.loadFromFile(new File("src/com/yandex/sprint_4/resources/Data.csv"));
+  } catch (Exception ignored) {
+
+  }
 
 
   FileBackedTaskManager taskManager = (FileBackedTaskManager) Managers.getDefault();

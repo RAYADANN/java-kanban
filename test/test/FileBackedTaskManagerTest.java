@@ -18,11 +18,10 @@ public class FileBackedTaskManagerTest {
     private FileBackedTaskManager taskManager;
 
     @BeforeEach
-    void setUp() throws IOException {
-        tempFile = new File("src/Data.csv");
+    void setUp() {
+        tempFile = new File("src/com/yandex/sprint_4/resources/Data.csv");
         taskManager = (FileBackedTaskManager) Managers.getDefault();
     }
-
 
     @Test
     void testSaveEmptyFile() {
@@ -49,9 +48,9 @@ public class FileBackedTaskManagerTest {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(tempFile))) {
             String line = reader.readLine(); // Skip header
-            assertEquals("1;TASK;Task 1;NEW;Description for Task 1;-", reader.readLine());
-            assertEquals("2;EPIC;Epic 1;NEW;Description for Epic 1;-", reader.readLine());
-            assertEquals("3;SUB;Subtask 1;NEW;Description for Subtask 1;2;Epic 1", reader.readLine());
+            assertEquals("1;TASK;Task 1;NEW;Description for Task 1;", reader.readLine());
+            assertEquals("2;EPIC;Epic 1;NEW;Description for Epic 1;", reader.readLine());
+            assertEquals("3;SUB;Subtask 1;NEW;Description for Subtask 1;2", reader.readLine());
             assertNull(reader.readLine()); // Проверяем, что больше строк нет
         } catch (IOException e) {
             fail("Ошибка чтения файла: " + e.getMessage());
@@ -62,9 +61,9 @@ public class FileBackedTaskManagerTest {
     void testLoadMultipleTasks() {
         try (FileWriter writer = new FileWriter(tempFile)) {
             writer.write("id;type;name;status;description;epic\n");
-            writer.write("1;TASK;Task 1;NEW;Description for Task 1;-\n");
-            writer.write("2;EPIC;Epic 1;IN_PROGRESS;Description for Epic 1;-\n");
-            writer.write("3;SUB;Subtask 1;NEW;Description for Subtask 1;2;Epic 1\n");
+            writer.write("1;TASK;Task 1;NEW;Description for Task 1;\n");
+            writer.write("2;EPIC;Epic 1;IN_PROGRESS;Description for Epic 1;\n");
+            writer.write("3;SUB;Subtask 1;NEW;Description for Subtask 1;2\n");
         } catch (IOException e) {
             fail("Ошибка записи в файл: " + e.getMessage());
         }
