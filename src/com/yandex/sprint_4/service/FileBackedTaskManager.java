@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
     private static final List<String> dataTask = new ArrayList<>();
-    private final String DATA_FILE_PATH = "src/com/yandex/sprint_4/resources/Data.csv";
-    private final File HOME_FILE = new File(DATA_FILE_PATH);
+    private static final String DATA_FILE_PATH = "src/com/yandex/sprint_4/resources/Data.csv";
+    private static final File HOME_FILE = new File(DATA_FILE_PATH);
 
     public FileBackedTaskManager() {
         try {
