@@ -38,23 +38,23 @@ public class Epic extends Task {
     }
 
     @Override
-    public LocalDateTime getEndTime(){
-        for (Subtask sub : subtasks){
-            if(sub.getEndTime().isAfter(endTime)) endTime = sub.getEndTime();
+    public LocalDateTime getEndTime() {
+        for (Subtask sub : subtasks) {
+            if (sub.getEndTime().isAfter(endTime)) endTime = sub.getEndTime();
         }
         return endTime;
     }
 
     @Override
-     public LocalDateTime getStartTime(){
-        for (Subtask sub : subtasks){
-            if(sub.getStartTime().isBefore(startTime)) startTime = sub.startTime;
+    public LocalDateTime getStartTime() {
+        for (Subtask sub : subtasks) {
+            if (sub.getStartTime().isBefore(startTime)) startTime = sub.startTime;
         }
         return startTime;
     }
 
     @Override
-    public Duration getDuration(){
+    public Duration getDuration() {
         duration = Duration.between(this.getStartTime(), this.getEndTime());
         return duration;
     }
