@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +42,14 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void testSaveMultipleTasks() {
-        Task task1 = taskManager.createTask(new Task(1, "Task 1", "Description for Task 1", Status.NEW));
-        Epic epic1 = taskManager.createEpic(new Epic(2, "Epic 1", "Description for Epic 1", Status.NEW));
-        Subtask subtask1 = taskManager.createSubtask(new Subtask(3, "Subtask 1", "Description for Subtask 1", Status.NEW, epic1));
+        Task task = new Task(1, "Task 1", "Description for Task 1", Status.NEW,
+                Duration.ofMinutes(10), LocalDateTime.now());
+        Epic epic = new Epic(2, "Epic 1", "Description for Epic 1", Status.NEW);
+        Subtask subtask = new Subtask(3, "Subtask 1", "Description for Subtask 1", Status.NEW, epic,
+                Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(10));
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubtask(subtask);
 
         taskManager.save();
 

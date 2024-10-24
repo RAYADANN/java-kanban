@@ -3,6 +3,8 @@ package com.yandex.sprint_4.service;
 import com.yandex.sprint_4.model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         data.addAll(super.getAllEpics());
         data.addAll(super.getAllSubtasks());
         try (Writer writer = new FileWriter(HOME_FILE, false)) {
-            writer.write("id;type;name;status;description;epicID\n");
+            writer.write("id;type;name;status;description;duration;timeStart;epicID\n");
             for (Task t : data) {
                 writer.write(toString(t));
             }
@@ -36,12 +38,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private String toString(Task task) {
-        return String.format("%s;%s;%s;%s;%s;%s\n",
+        return String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
                 task.getId(),
                 task.getTaskType(),
                 task.getName(),
                 task.getStatus(),
                 task.getDescription(),
+                task.getDuration(),
+                task.getStartTime(),
                 task.getEpic() != null ? task.getEpic().getId() : "");
     }
 
@@ -66,29 +70,40 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         String[] data = value.split(";");
         switch (data[1]) {
             case "TASK":
-                return createTask(new Task(Integer.parseInt(data[0]),
+                Task task = new Task(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
                         data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
-                                : Status.IN_PROGRESS));
+                                : Status.IN_PROGRESS,
+                        Duration.parse(data[5]),
+                        LocalDateTime.parse(data[6]));
+                createTask(task);
+                return task;
             case "EPIC":
-                return createEpic(new Epic(Integer.parseInt(data[0]),
+                Epic epic = (new Epic(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
                         data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
                                 : Status.IN_PROGRESS));
+                createEpic(epic);
+                return epic;
             case "SUB":
-                return createSubtask(new Subtask(
+                Subtask sub = (new Subtask(
                         Integer.parseInt(data[0]),
                         data[2],
                         data[4],
                         data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
                                 : Status.IN_PROGRESS,
-                        getEpicById(Integer.parseInt(data[5]))
+                        getEpicById(Integer.parseInt(data[7])),
+                        Duration.parse(data[5]),
+                        LocalDateTime.parse(data[6])
                 ));
+                createSubtask(sub);
+                return sub;
 
             default:
                 return null;
+
 
         }
     }
@@ -105,10 +120,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public Task createTask(Task task) {
+    public void createTask(Task task) {
         super.createTask(task);
         save();
-        return task;
+
     }
 
     @Override
@@ -124,10 +139,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public Epic createEpic(Epic epic) {
+    public void createEpic(Epic epic) {
         super.createEpic(epic);
         save();
-        return epic;
+
     }
 
     @Override
@@ -143,10 +158,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public Subtask createSubtask(Subtask subtask) {
+    public void createSubtask(Subtask subtask) {
         super.createSubtask(subtask);
         save();
-        return subtask;
     }
 
     @Override

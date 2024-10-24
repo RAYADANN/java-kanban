@@ -6,6 +6,8 @@ import com.yandex.sprint_4.model.Subtask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,8 +21,8 @@ class EpicTest {
     @BeforeEach
     void beforeEach() {
         epic = new Epic(1, "Название эпика", "Описание эпика", Status.NEW);
-        subtask1 = new Subtask(101, "Подзадача 1", "Описание подзадачи 1", Status.DONE, epic);
-        subtask2 = new Subtask(102, "Подзадача 2", "Описание подзадачи 2", Status.IN_PROGRESS, epic);
+        subtask1 = new Subtask(101, "Подзадача 1", "Описание подзадачи 1", Status.DONE, epic, Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(10));
+        subtask2 = new Subtask(102, "Подзадача 2", "Описание подзадачи 2", Status.IN_PROGRESS, epic, Duration.ofMinutes(10), LocalDateTime.now());
     }
 
     @Test

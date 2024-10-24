@@ -1,5 +1,8 @@
 package com.yandex.sprint_4.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Task {
     protected int id;
     protected String name;
@@ -7,13 +10,19 @@ public class Task {
     protected Status status;
     protected Epic epic;
     protected TaskTypes taskType;
+    protected Duration duration;
+    protected LocalDateTime startTime = LocalDateTime.MAX;
 
-    public Task(int id, String name, String description, Status status) {
+
+
+    public Task(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.setTaskType(TaskTypes.TASK);
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
 
@@ -65,6 +74,18 @@ public class Task {
         this.taskType = taskType;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime(){
+        return startTime.plusMinutes(duration.toMinutesPart());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,6 +106,10 @@ public class Task {
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + this.getEndTime() +
                 '}';
     }
+
 }

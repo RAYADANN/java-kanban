@@ -6,6 +6,8 @@ import com.yandex.sprint_4.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,10 +24,12 @@ class HistoryManagerTest {
     public void beforeEach() {
         historyManager = Managers.getDefaultHistory();
 
-        task = new Task(0, "Задача 1", "Описание 1", Status.NEW);
+        task = new Task(0, "Задача 1", "Описание 1", Status.NEW, Duration.ofMinutes(5),
+                LocalDateTime.now());
         historyManager.add(task);
 
-        task2 = new Task(1, "Задача 2", "Описание 2", Status.NEW);
+        task2 = new Task(1, "Задача 2", "Описание 2", Status.NEW, Duration.ofMinutes(10),
+                LocalDateTime.now().plusMinutes(10));
         historyManager.add(task2);
 
         history = historyManager.getHistory();
