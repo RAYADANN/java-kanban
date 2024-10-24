@@ -13,7 +13,7 @@ public class Subtask extends Task {
                    Epic epic,
                    Duration duration,
                    LocalDateTime startTime) {
-        super(id, name, description, status, duration, startTime );
+        super(id, name, description, status, duration, startTime);
         setEpic(epic);
         this.setTaskType(TaskTypes.SUB);
     }
