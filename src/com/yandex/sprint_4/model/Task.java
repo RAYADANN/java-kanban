@@ -14,7 +14,6 @@ public class Task {
     protected LocalDateTime startTime = LocalDateTime.MAX;
 
 
-
     public Task(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
@@ -82,7 +81,7 @@ public class Task {
         return startTime;
     }
 
-    public LocalDateTime getEndTime(){
+    public LocalDateTime getEndTime() {
         return startTime.plusMinutes(duration.toMinutesPart());
     }
 
@@ -111,5 +110,4 @@ public class Task {
                 ", endTime=" + this.getEndTime() +
                 '}';
     }
-
 }
