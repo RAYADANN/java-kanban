@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class FileBackedTaskManagerTest {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(tempFile))) {
             String line = reader.readLine();
-            assertEquals("id;type;name;status;description;epicID", line);
+            assertEquals("id;type;name;status;description;duration;timeStart;epicID", line);
             assertNull(reader.readLine());
         } catch (IOException e) {
             fail("Ошибка чтения файла: " + e.getMessage());
@@ -42,22 +43,20 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void testSaveMultipleTasks() {
-        Task task = new Task(1, "Task 1", "Description for Task 1", Status.NEW,
-                Duration.ofMinutes(10), LocalDateTime.now());
-        Epic epic = new Epic(2, "Epic 1", "Description for Epic 1", Status.NEW);
-        Subtask subtask = new Subtask(3, "Subtask 1", "Description for Subtask 1", Status.NEW, epic,
-                Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(10));
-        taskManager.createTask(task);
-        taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask);
+        Task task1 = new Task(1, "Task 1", "Description for Task 1", Status.NEW, Duration.ofMinutes(10), LocalDateTime.of(2014, Month.APRIL, 8, 12, 30));
+        taskManager.createTask(task1);
+        Epic epic1 = new Epic(2, "Epic 1", "Description for Epic 1", Status.NEW);
+        taskManager.createEpic(epic1);
+        Subtask subtask1 = new Subtask(3, "Subtask 1", "Description for Subtask 1", Status.NEW, epic1, Duration.ofMinutes(10), LocalDateTime.of(2014, Month.APRIL, 8, 12, 45));
+        taskManager.createSubtask(subtask1);
 
         taskManager.save();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(tempFile))) {
             String line = reader.readLine(); // Skip header
-            assertEquals("1;TASK;Task 1;NEW;Description for Task 1;", reader.readLine());
-            assertEquals("2;EPIC;Epic 1;NEW;Description for Epic 1;", reader.readLine());
-            assertEquals("3;SUB;Subtask 1;NEW;Description for Subtask 1;2", reader.readLine());
+            assertEquals("1;TASK;Task 1;NEW;Description for Task 1;PT10M;2014-04-08T12:30;", reader.readLine());
+            assertEquals("2;EPIC;Epic 1;NEW;Description for Epic 1;PT10M;2014-04-08T12:45;", reader.readLine());
+            assertEquals("3;SUB;Subtask 1;NEW;Description for Subtask 1;PT10M;2014-04-08T12:45;2", reader.readLine());
             assertNull(reader.readLine()); // Проверяем, что больше строк нет
         } catch (IOException e) {
             fail("Ошибка чтения файла: " + e.getMessage());
@@ -67,10 +66,10 @@ public class FileBackedTaskManagerTest {
     @Test
     void testLoadMultipleTasks() {
         try (FileWriter writer = new FileWriter(tempFile)) {
-            writer.write("id;type;name;status;description;epic\n");
-            writer.write("1;TASK;Task 1;NEW;Description for Task 1;\n");
+            writer.write("id;type;name;status;description;duration;timeStart;epicID\n");
+            writer.write("1;TASK;Task 1;NEW;Description for Task 1;" + Duration.ofMinutes(10) + ";" + LocalDateTime.of(2014, Month.APRIL, 8, 12, 30) + "\n");
             writer.write("2;EPIC;Epic 1;IN_PROGRESS;Description for Epic 1;\n");
-            writer.write("3;SUB;Subtask 1;NEW;Description for Subtask 1;2\n");
+            writer.write("3;SUB;Subtask 1;NEW;Description for Subtask 1;" + Duration.ofMinutes(10) + ";" + LocalDateTime.of(2014, Month.APRIL, 8, 12, 45) + ";2\n");
         } catch (IOException e) {
             fail("Ошибка записи в файл: " + e.getMessage());
         }

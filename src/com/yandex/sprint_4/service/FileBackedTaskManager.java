@@ -120,10 +120,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         super.createTask(task);
         save();
 
+        return task;
     }
 
     @Override

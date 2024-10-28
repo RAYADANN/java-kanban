@@ -31,13 +31,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         if (getTaskIntersection(task)) {
             tasks.put(task.getId(), task);
         } else {
             System.out.println("Задача не подходит " + task);
         }
 
+        return task;
     }
 
     @Override
