@@ -14,11 +14,10 @@ public class Main {
  public static void main(String[] args) {
 
   try {
-   FileBackedTaskManager.loadFromFile(new File("src/com/yandex/sprint_4/resources/Data.csv"));
+   FileBackedTaskManager.loadFromFile(new File("Data.csv"));
   } catch (Exception ignored) {
 
   }
-
 
   FileBackedTaskManager taskManager = (FileBackedTaskManager) Managers.getDefault();
   if (taskManager.getDataTask() != null) {
@@ -31,13 +30,13 @@ public class Main {
           Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(100));
   Task task2 = new Task(2, "Сходить в магазин", "Купить продукты на ужин", Status.IN_PROGRESS,
           Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(400));
-
   Epic epic1 = new Epic(3, "Организация дня рождения", "Запланировать день рождения, " +
           "купить подарки, организовать вечеринку", Status.NEW);
   Subtask subtask1 = new Subtask(4, "Запланировать день рождения", "Выбрать дату, место, гостей",
           Status.NEW, epic1, Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(50));
   Subtask subtask2 = new Subtask(5, "Купить подарки", "Выбрать подарки для всех гостей", Status.DONE,
           epic1, Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(70));
+
   taskManager.createEpic(epic1);
   taskManager.createSubtask(subtask1);
   taskManager.createSubtask(subtask2);

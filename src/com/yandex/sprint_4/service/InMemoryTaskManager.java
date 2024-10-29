@@ -52,7 +52,6 @@ public class InMemoryTaskManager implements TaskManager {
         history.remove(id);
     }
 
-
     @Override
     public List<Epic> getAllEpics() {
         return new ArrayList<>(epics.values());
@@ -78,7 +77,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpic(Epic epic) {
         epics.put(epic.getId(), epic);
-
     }
 
     @Override

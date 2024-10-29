@@ -8,11 +8,9 @@ public class Task {
     protected String name;
     protected String description;
     protected Status status;
-    protected Epic epic;
     protected TaskTypes taskType;
     protected Duration duration;
     protected LocalDateTime startTime = LocalDateTime.MAX;
-
 
     public Task(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = id;
@@ -23,7 +21,6 @@ public class Task {
         this.duration = duration;
         this.startTime = startTime;
     }
-
 
     public int getId() {
         return id;
@@ -57,14 +54,6 @@ public class Task {
         this.status = status;
     }
 
-    public Epic getEpic() {
-        return epic;
-    }
-
-    public void setEpic(Epic epic) {
-        this.epic = epic;
-    }
-
     public TaskTypes getTaskType() {
         return taskType;
     }
@@ -79,6 +68,10 @@ public class Task {
 
     public LocalDateTime getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(LocalDateTime time) {
+        this.startTime = time;
     }
 
     public LocalDateTime getEndTime() {

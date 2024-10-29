@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Subtask extends Task {
-
+    protected Epic epic;
 
     public Subtask(int id,
                    String name,
@@ -18,6 +18,13 @@ public class Subtask extends Task {
         this.setTaskType(TaskTypes.SUB);
     }
 
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
+    }
 
     @Override
     public String toString() {

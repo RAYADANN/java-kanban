@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
     private static final List<String> dataTask = new ArrayList<>();
     private static final String DATA_FILE_PATH = "src/com/yandex/sprint_4/resources/Data.csv";
@@ -38,26 +37,37 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private String toString(Task task) {
-        return String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
-                task.getId(),
-                task.getTaskType(),
-                task.getName(),
-                task.getStatus(),
-                task.getDescription(),
-                task.getDuration(),
-                task.getStartTime(),
-                task.getEpic() != null ? task.getEpic().getId() : "");
+        if (task instanceof Subtask) {
+            return String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
+                    task.getId(),
+                    task.getTaskType(),
+                    task.getName(),
+                    task.getStatus(),
+                    task.getDescription(),
+                    task.getDuration(),
+                    task.getStartTime(),
+                    super.getSubtaskById(task.getId()).getEpic() != null ?
+                            super.getSubtaskById(task.getId()).getEpic().getId() : "");
+        } else {
+            return String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
+                    task.getId(),
+                    task.getTaskType(),
+                    task.getName(),
+                    task.getStatus(),
+                    task.getDescription(),
+                    task.getDuration(),
+                    task.getStartTime(),
+                    "");
+        }
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
-        try (Reader reader = new FileReader(file);
-             BufferedReader br = new BufferedReader(reader)) {
+        try (Reader reader = new FileReader(file); BufferedReader br = new BufferedReader(reader)) {
             br.readLine();
             while (br.ready()) {
                 String line = br.readLine();
                 dataTask.add(line);
             }
-
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -73,8 +83,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 Task task = new Task(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
-                        data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
-                                : Status.IN_PROGRESS,
+                        Status.valueOf(data[3]),
                         Duration.parse(data[5]),
                         LocalDateTime.parse(data[6]));
                 createTask(task);
@@ -83,8 +92,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 Epic epic = (new Epic(Integer.parseInt(data[0]),
                         data[2],
                         data[4],
-                        data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
-                                : Status.IN_PROGRESS));
+                        Status.valueOf(data[3])));
                 createEpic(epic);
                 return epic;
             case "SUB":
@@ -92,19 +100,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                         Integer.parseInt(data[0]),
                         data[2],
                         data[4],
-                        data[3].equals("NEW") ? Status.NEW : data[3].equals("DONE") ? Status.DONE
-                                : Status.IN_PROGRESS,
+                        Status.valueOf(data[3]),
                         getEpicById(Integer.parseInt(data[7])),
                         Duration.parse(data[5]),
                         LocalDateTime.parse(data[6])
                 ));
                 createSubtask(sub);
                 return sub;
-
             default:
                 return null;
-
-
         }
     }
 
@@ -143,7 +147,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void createEpic(Epic epic) {
         super.createEpic(epic);
         save();
-
     }
 
     @Override
@@ -173,5 +176,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public List<String> getDataTask() {
         return dataTask;
     }
-
 }
