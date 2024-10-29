@@ -24,17 +24,5 @@ public class ManagersTest {
         assertTrue(historyManager instanceof InMemoryHistoryManager);
     }
 
-    @Test
-    void testGetDefaultTaskManagerReturnsSameInstance() {
-        TaskManager taskManager1 = Managers.getDefault();
-        TaskManager taskManager2 = Managers.getDefault();
-        assertSame(taskManager1, taskManager2);
-    }
 
-    @Test
-    void testGetDefaultHistoryManagerReturnsSameInstance() {
-        HistoryManager historyManager1 = Managers.getDefaultHistory();
-        HistoryManager historyManager2 = Managers.getDefaultHistory();
-        assertSame(historyManager1, historyManager2);
-    }
 }

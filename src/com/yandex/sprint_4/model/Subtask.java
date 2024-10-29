@@ -1,15 +1,29 @@
 package com.yandex.sprint_4.model;
 
-public class Subtask extends Task {
-    private final Epic epic;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-    public Subtask(int id, String name, String description, Status status, Epic epic) {
-        super(id, name, description, status);
-        this.epic = epic;
+public class Subtask extends Task {
+    protected Epic epic;
+
+    public Subtask(int id,
+                   String name,
+                   String description,
+                   Status status,
+                   Epic epic,
+                   Duration duration,
+                   LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+        setEpic(epic);
+        this.setTaskType(TaskTypes.SUB);
     }
 
     public Epic getEpic() {
         return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 
     @Override
@@ -19,7 +33,10 @@ public class Subtask extends Task {
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", epic=" + epic.getName() +
+                ", epic=" + getEpic().getName() +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 }
