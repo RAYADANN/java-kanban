@@ -20,6 +20,7 @@ public class Main {
   }
 
   FileBackedTaskManager taskManager = (FileBackedTaskManager) Managers.getDefault();
+  taskManager.save();
   if (taskManager.getDataTask() != null) {
    for (String line : taskManager.getDataTask()) {
     taskManager.fromString(line);
@@ -51,7 +52,7 @@ public class Main {
   taskManager.createTask(task1);
   taskManager.createTask(task2);
 
-  System.out.println("Список задач: " + taskManager.getAllTasks());
+  System.out.println("СПИСОК ЗАДАЧ: " + taskManager.getAllTasks());
   System.out.println("Список эпиков: " + taskManager.getAllEpics());
   System.out.println("Список подзадач: " + taskManager.getAllSubtasks());
 

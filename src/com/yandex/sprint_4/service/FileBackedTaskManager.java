@@ -73,6 +73,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return null;
     }
 
@@ -162,9 +163,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public Subtask createSubtask(Subtask subtask) {
         super.createSubtask(subtask);
         save();
+        return subtask;
     }
 
     @Override

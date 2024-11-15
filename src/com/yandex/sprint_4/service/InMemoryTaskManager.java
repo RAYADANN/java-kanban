@@ -42,8 +42,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public Task updateTask(Task task) {
         tasks.put(task.getId(), task);
+        return task;
     }
 
     @Override
@@ -75,8 +76,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(Epic epic) {
+    public Epic updateEpic(Epic epic) {
         epics.put(epic.getId(), epic);
+        return epic;
     }
 
     @Override
@@ -108,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public Subtask createSubtask(Subtask subtask) {
         if (getTaskIntersection(subtask)) {
             subtasks.put(subtask.getId(), subtask);
             subtask.getEpic().addSubtask(subtask);
@@ -116,12 +118,14 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Подзадача не подходит " + subtask);
         }
+        return subtask;
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) {
+    public Subtask updateSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
         updateEpicStatus(subtask.getEpic().getId());
+        return subtask;
     }
 
     @Override
